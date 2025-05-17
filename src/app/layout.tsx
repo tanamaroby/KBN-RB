@@ -2,10 +2,10 @@ import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
 import "./globals.css";
 
-const Font = Roboto({ subsets: ["latin"] });
+const font = Roboto({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "KBN-RB",
+  title: "KNB RB",
   description: "ERP System for Plantation Management",
 };
 
@@ -16,10 +16,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head>
-        <meta name="apple-mobile-web-app-title" content="KBN RB" />
-      </head>
-      <body className={`${Font.className} antialiased`}>{children}</body>
+      <body className={`${font.className} antialiased`}>{children}</body>
     </html>
   );
 }

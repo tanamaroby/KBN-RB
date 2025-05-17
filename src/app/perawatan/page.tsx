@@ -1,10 +1,10 @@
 import SidebarWrapper from "@/components/sidebar-wrapper";
 import Title from "@/components/title";
 
-export default function Home() {
+export default function Perawatan() {
   return (
     <SidebarWrapper>
-      <Title>Dashboard</Title>
+      <Title>Perawatan</Title>
     </SidebarWrapper>
   );
 }
