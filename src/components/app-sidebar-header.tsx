@@ -23,17 +23,14 @@ const AppSidebarHeader: React.FC<AppSidebarHeaderProps> = (props) => {
           <BreadcrumbList>
             {breadcrumbs.map((breadcrumb) => {
               return (
-                <>
+                <React.Fragment key={`breadcrumb-item-${breadcrumb.href}`}>
                   <BreadcrumbSeparator className="hidden md:block" />
-                  <BreadcrumbItem
-                    className="hidden md:block"
-                    key={`breadcrumb-item-${breadcrumb.href}`}
-                  >
+                  <BreadcrumbItem className="hidden md:block">
                     <BreadcrumbLink href={breadcrumb.href}>
                       {breadcrumb.title}
                     </BreadcrumbLink>
                   </BreadcrumbItem>
-                </>
+                </React.Fragment>
               );
             })}
           </BreadcrumbList>
