@@ -14,9 +14,21 @@ import {
 } from "@/components/ui/sidebar";
 import { KEBUN_LIST } from "@/lib/constants/kebun";
 import { NAV_ITEMS } from "@/lib/constants/nav";
-import { USER } from "@/lib/constants/user";
+import { useUser } from "@/stores/user-store";
+import { users } from "../../generated/prisma";
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
+  user: users;
+}
+
+export function AppSidebar({ ...props }: AppSidebarProps) {
+  const { user } = props;
+  const { updateUser } = useUser();
+
+  React.useEffect(() => {
+    updateUser(user);
+  }, [user]);
+
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
@@ -26,7 +38,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavMain items={NAV_ITEMS} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={USER} />
+        <NavUser user={user} />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
