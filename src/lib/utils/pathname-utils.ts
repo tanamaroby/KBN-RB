@@ -1,4 +1,4 @@
-import { concat, map, upperFirst } from "lodash";
+import { concat, first, map, upperFirst } from "lodash";
 
 export type BreadcrumbType = {
   title: string;
@@ -20,4 +20,8 @@ export const getBreadcrumbsFromPathname = (
       href: pathname,
     }))
   );
+};
+
+export const getNameFromPathname = (pathname: string) => {
+  return "/" + (first(pathname.split("/").filter(Boolean)) ?? "");
 };
