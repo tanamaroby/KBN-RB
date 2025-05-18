@@ -84,14 +84,14 @@ const PlantationForm: React.FC<PlantationFormProps> = (props) => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4"
+        className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4"
       >
         <FormField
           control={form.control}
           name="name"
           render={({ field }) => {
             return (
-              <FormItem>
+              <FormItem className="col-span-1">
                 <FormLabel>Name *</FormLabel>
                 <FormControl>
                   <Input placeholder="Ketik nama..." {...field} />
@@ -109,7 +109,7 @@ const PlantationForm: React.FC<PlantationFormProps> = (props) => {
           name="code"
           render={({ field }) => {
             return (
-              <FormItem>
+              <FormItem className="col-span-1">
                 <FormLabel>Kode *</FormLabel>
                 <FormControl>
                   <Input placeholder="Ketik kode..." {...field} />
@@ -127,7 +127,7 @@ const PlantationForm: React.FC<PlantationFormProps> = (props) => {
           name="areaTotalHa"
           render={({ field }) => {
             return (
-              <FormItem>
+              <FormItem className="col-span-1">
                 <FormLabel>Total Area (HA) *</FormLabel>
                 <FormControl>
                   <Input
@@ -149,7 +149,7 @@ const PlantationForm: React.FC<PlantationFormProps> = (props) => {
           name="location"
           render={({ field }) => {
             return (
-              <FormItem className="col-span-2">
+              <FormItem className="col-span-1 xl:col-span-2">
                 <FormLabel>Lokasi</FormLabel>
                 <FormControl>
                   <Input placeholder="Ketik lokasi..." {...field} />
@@ -165,7 +165,7 @@ const PlantationForm: React.FC<PlantationFormProps> = (props) => {
           name="ownerCompany"
           render={({ field }) => {
             return (
-              <FormItem>
+              <FormItem className="col-span-1 lg:col-span-2 xl:col-span-1">
                 <FormLabel>Nama Pemilik</FormLabel>
                 <FormControl>
                   <Input placeholder="Ketik nama..." {...field} />
@@ -183,7 +183,7 @@ const PlantationForm: React.FC<PlantationFormProps> = (props) => {
           name="managerName"
           render={({ field }) => {
             return (
-              <FormItem className="col-span-3">
+              <FormItem className="col-span-1 lg:col-span-2 xl:col-span-3">
                 <FormLabel>Nama Manager</FormLabel>
                 <FormControl>
                   <Input placeholder="Ketik nama..." {...field} />
@@ -201,7 +201,7 @@ const PlantationForm: React.FC<PlantationFormProps> = (props) => {
           name="contactNumber"
           render={({ field }) => {
             return (
-              <FormItem>
+              <FormItem className="col-span-1 lg:col-span-2 xl:col-span-1">
                 <FormLabel>Nomor HP / Contact</FormLabel>
                 <FormControl>
                   <Input placeholder="Ketik nomor..." {...field} />
@@ -219,7 +219,7 @@ const PlantationForm: React.FC<PlantationFormProps> = (props) => {
           name="latitude"
           render={({ field }) => {
             return (
-              <FormItem>
+              <FormItem className="col-span-1">
                 <FormLabel>Latitude</FormLabel>
                 <FormControl>
                   <Input
@@ -241,7 +241,7 @@ const PlantationForm: React.FC<PlantationFormProps> = (props) => {
           name="longitude"
           render={({ field }) => {
             return (
-              <FormItem>
+              <FormItem className="col-span-1">
                 <FormLabel>Longitude</FormLabel>
                 <FormControl>
                   <Input
@@ -263,7 +263,7 @@ const PlantationForm: React.FC<PlantationFormProps> = (props) => {
           name="notes"
           render={({ field }) => {
             return (
-              <FormItem className="col-span-3">
+              <FormItem className="col-span-1 lg:col-span-2 xl:col-span-3">
                 <FormLabel>Nota Keterangan</FormLabel>
                 <FormControl>
                   <Textarea
@@ -285,7 +285,7 @@ const PlantationForm: React.FC<PlantationFormProps> = (props) => {
           name="createdAt"
           render={({ field }) => {
             return (
-              <FormItem className="col-span-3">
+              <FormItem className="col-span-1 lg:col-span-2 xl:col-span-3">
                 <FormLabel>Tanggal Mulai</FormLabel>
                 <DatePicker field={field} />
                 <FormDescription>Tanggal lahir kebun ini</FormDescription>
@@ -294,7 +294,10 @@ const PlantationForm: React.FC<PlantationFormProps> = (props) => {
             );
           }}
         />
-        <Button className="col-span-3" type="submit">
+        <Button
+          className="col-span-1 lg:col-span-2 xl:col-span-3"
+          type="submit"
+        >
           Selesai
         </Button>
       </form>
