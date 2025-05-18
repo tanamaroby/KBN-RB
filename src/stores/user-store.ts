@@ -2,6 +2,8 @@ import { create } from "zustand";
 import { users } from "../../generated/prisma";
 
 export type UseUserStoreType = users & {
+  loading: boolean;
+  setLoading: (isLoading: boolean) => void;
   updateFirstName: (name: string) => void;
   updateLastName: (name: string) => void;
   updateEmail: (email: string) => void;
@@ -21,6 +23,8 @@ export const EMPTY_USER: users = {
 
 export const useUser = create<UseUserStoreType>((set) => ({
   ...EMPTY_USER,
+  loading: true,
+  setLoading: (isLoading: boolean) => set({ loading: isLoading }),
   updateFirstName: (name: string) => set(() => ({ first_name: name })),
   updateLastName: (name: string) => set(() => ({ last_name: name })),
   updateEmail: (email: string) => set(() => ({ email })),

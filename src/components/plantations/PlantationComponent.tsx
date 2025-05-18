@@ -1,13 +1,33 @@
+"use client";
+import { usePlantation } from "@/stores/plantation-store";
+import { map } from "lodash";
 import * as React from "react";
-import { Plantation } from "../../../generated/prisma";
+import { Skeleton } from "../ui/skeleton";
+import PlantationCard from "./PlantationCard";
 
-interface PlantationComponentProps {
-  plantations: Array<Plantation>;
-}
+interface PlantationComponentProps {}
 
 const PlantationComponent: React.FC<PlantationComponentProps> = (props) => {
-  const { plantations } = props;
-  return null;
+  const { plantations, loading } = usePlantation();
+  if (loading) {
+    return (
+      <div className="grid grid-cols-3 gap-4">
+        <Skeleton className="h-[500px] w-full" />
+        <Skeleton className="h-[500px] w-full" />
+        <Skeleton className="h-[500px] w-full" />
+        <Skeleton className="h-[500px] w-full" />
+        <Skeleton className="h-[500px] w-full" />
+        <Skeleton className="h-[500px] w-full" />
+      </div>
+    );
+  }
+  return (
+    <div className="grid grid-cols-3 gap-4">
+      {map(plantations, (plantation) => {
+        return <PlantationCard key={plantation.id} {...plantation} />;
+      })}
+    </div>
+  );
 };
 
 export default PlantationComponent;

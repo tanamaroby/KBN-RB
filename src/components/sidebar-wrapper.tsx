@@ -1,19 +1,16 @@
 import { getAllPlantations, getFirstUser } from "@/app/actions";
 import { EMPTY_USER } from "@/stores/user-store";
 import * as React from "react";
-import { Plantation } from "../../generated/prisma";
 import { AppSidebar } from "./app-sidebar";
 import AppSidebarHeader from "./app-sidebar-header";
 import { SidebarInset, SidebarProvider } from "./ui/sidebar";
 
-interface SidebarWrapperProps extends React.PropsWithChildren {
-  plantations?: Array<Plantation>;
-}
+interface SidebarWrapperProps extends React.PropsWithChildren {}
 
 const SidebarWrapper: React.FC<SidebarWrapperProps> = async (props) => {
-  const { children, plantations: injectedPlantations } = props;
+  const { children } = props;
   const user = await getFirstUser();
-  const plantations = injectedPlantations ?? (await getAllPlantations());
+  const plantations = await getAllPlantations();
   return (
     <SidebarProvider>
       <AppSidebar user={user ?? EMPTY_USER} plantations={plantations} />

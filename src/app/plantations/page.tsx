@@ -4,12 +4,10 @@ import Title from "@/components/title";
 import { Button } from "@/components/ui/button";
 import { PlusIcon } from "lucide-react";
 import Link from "next/link";
-import { getAllPlantations } from "../actions";
 
 export default async function Plantations() {
-  const plantations = await getAllPlantations();
   return (
-    <SidebarWrapper plantations={plantations}>
+    <SidebarWrapper>
       <div className="flex justify-between items-center">
         <Title>Plantations</Title>
         <Link href="/plantations/new">
@@ -19,7 +17,7 @@ export default async function Plantations() {
           </Button>
         </Link>
       </div>
-      <PlantationComponent plantations={plantations} />
+      <PlantationComponent />
     </SidebarWrapper>
   );
 }

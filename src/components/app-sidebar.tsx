@@ -24,14 +24,16 @@ interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
 
 export function AppSidebar({ ...props }: AppSidebarProps) {
   const { user, plantations } = props;
-  const { updateUser } = useUser();
-  const { setPlantations } = usePlantation();
+  const { updateUser, setLoading } = useUser();
+  const { setPlantations, setLoading: setPlantationLoading } = usePlantation();
 
   React.useEffect(() => {
     updateUser(user);
+    setLoading(false);
     if (plantations) {
       setPlantations(plantations);
     }
+    setPlantationLoading(false);
   }, [user]);
 
   return (
@@ -43,7 +45,7 @@ export function AppSidebar({ ...props }: AppSidebarProps) {
         <NavMain items={NAV_ITEMS} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={user} />
+        <NavUser />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

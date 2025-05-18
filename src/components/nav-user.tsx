@@ -1,13 +1,5 @@
 "use client";
 
-import {
-  BadgeCheck,
-  Bell,
-  ChevronsUpDown,
-  CreditCard,
-  LogOut,
-} from "lucide-react";
-
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -25,10 +17,32 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { getInitialFromUserNames } from "@/lib/utils/user-utils";
-import { users } from "../../generated/prisma";
+import { useUser } from "@/stores/user-store";
+import {
+  BadgeCheck,
+  Bell,
+  ChevronsUpDown,
+  CreditCard,
+  LogOut,
+} from "lucide-react";
+import { Skeleton } from "./ui/skeleton";
 
-export function NavUser({ user }: { user: users }) {
+export function NavUser() {
   const { isMobile } = useSidebar();
+
+  const user = useUser();
+
+  if (user.loading) {
+    return (
+      <div className="flex items-center p-[8px] gap-2">
+        <Skeleton className="h-8 w-8 rounded-full" />
+        <div className="flex-1">
+          <Skeleton className="h-4 w-full" />
+          <Skeleton className="h-4 w-3/4" />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <SidebarMenu>

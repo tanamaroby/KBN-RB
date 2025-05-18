@@ -17,16 +17,30 @@ import {
 } from "@/components/ui/sidebar";
 import { usePlantation } from "@/stores/plantation-store";
 import { first } from "lodash";
+import { Skeleton } from "./ui/skeleton";
 
 export function KebunSwitcher() {
   const { isMobile } = useSidebar();
 
-  const { plantations, plantation, updatePlantation } = usePlantation();
+  const { plantations, plantation, updatePlantation, loading } =
+    usePlantation();
 
   const selectedPlantation = React.useMemo(() => {
     if (plantation) return plantation;
     return first(plantations);
   }, [plantation, plantations]);
+
+  if (loading) {
+    return (
+      <div className="flex items-center p-[8px] gap-2">
+        <Skeleton className="size-4 rounded-full" />
+        <div className="flex-1">
+          <Skeleton className="h-4 w-full" />
+          <Skeleton className="h-4 w-3/4" />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <SidebarMenu>
