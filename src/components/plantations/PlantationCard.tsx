@@ -1,12 +1,15 @@
 import { cn } from "@/lib/utils";
 import { capitalize } from "lodash";
+import { Search } from "lucide-react";
 import Image from "next/image";
 import * as React from "react";
 import { Plantation } from "../../../generated/prisma";
+import { Button } from "../ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "../ui/card";
@@ -53,7 +56,7 @@ const PlantationCard: React.FC<PlantationCardProps> = (props) => {
           <span className="font-semibold">{props.areaTotalHa} Ha</span>
         </CardDescription>
       </CardHeader>
-      <CardContent className="grid gap-y-6">
+      <CardContent className="grid gap-y-6 flex-1">
         <div className="grid sm:grid-cols-2 gap-x-6 gap-y-4">
           <PlantationItem
             label="Lokasi"
@@ -97,6 +100,15 @@ const PlantationCard: React.FC<PlantationCardProps> = (props) => {
           />
         </div>
       </CardContent>
+      <CardFooter className="flex justify-center items-end border-t">
+        <Button
+          variant="ghost"
+          className="flex w-full items-center gap-2 h-fit text-primary hover:bg-transparent hover:text-primary hover:scale-105 transition-transform cursor-pointer"
+        >
+          <Search />
+          <p>Lihat dan Edit</p>
+        </Button>
+      </CardFooter>
     </Card>
   );
 };
