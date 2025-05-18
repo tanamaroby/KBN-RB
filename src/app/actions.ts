@@ -9,3 +9,11 @@ export const getAllUsers = async () => {
 export const getFirstUser = async () => {
   return prisma.users.findFirst();
 };
+
+export const getAllPlantations = async () => {
+  return prisma.plantation.findMany();
+};
+
+export const getFirstPlantation = async () => {
+  return prisma.plantation.findFirst();
+};

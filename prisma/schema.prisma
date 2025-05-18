@@ -16,3 +16,47 @@ model users {
   role       String
   avatar     String?
 }
+
+model Plantation {
+  id             String     @id @default(uuid())
+  name           String
+  code           String     @unique
+  location       String?
+  areaTotalHa    Float?
+  ownerCompany   String?
+  managerName    String?
+  contactNumber  String?
+  latitude       Float?
+  longitude      Float?
+  notes          String?
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt @default(now())
+
+  blocks         Block[]    // One-to-many relationship
+}
+
+model Block {
+  id             String      @id @default(uuid())
+  plantationId   String
+  year           Int
+  blockCode      String
+  areaLahanHa    Float
+  areaPokokHa    Float
+  tm             Int
+  tb1            Int
+  tb2            Int
+  tb3            Int
+  pokokHidup     Int
+  pokokMati      Int
+  pokokTotal     Int
+  keterangan     String?
+
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+
+  // Relations
+  plantation     Plantation  @relation(fields: [plantationId], references: [id])
+
+  @@index([plantationId])
+  @@unique([plantationId, blockCode, year]) // one block code per plantation per year
+}

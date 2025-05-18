@@ -12,27 +12,32 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar";
-import { KEBUN_LIST } from "@/lib/constants/kebun";
 import { NAV_ITEMS } from "@/lib/constants/nav";
+import { usePlantation } from "@/stores/plantation-store";
 import { useUser } from "@/stores/user-store";
-import { users } from "../../generated/prisma";
+import { Plantation, users } from "../../generated/prisma";
 
 interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
   user: users;
+  plantations: Array<Plantation>;
 }
 
 export function AppSidebar({ ...props }: AppSidebarProps) {
-  const { user } = props;
+  const { user, plantations } = props;
   const { updateUser } = useUser();
+  const { setPlantations } = usePlantation();
 
   React.useEffect(() => {
     updateUser(user);
+    if (plantations) {
+      setPlantations(plantations);
+    }
   }, [user]);
 
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <KebunSwitcher kebuns={KEBUN_LIST} />
+        <KebunSwitcher />
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={NAV_ITEMS} />

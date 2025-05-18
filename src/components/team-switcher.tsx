@@ -1,14 +1,12 @@
 "use client";
 
-import { ChevronsUpDown } from "lucide-react";
+import { ChevronsUpDown, FileQuestion, TreePalm } from "lucide-react";
 import * as React from "react";
 
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
@@ -17,19 +15,18 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { KebunType } from "@/lib/constants/kebun";
+import { usePlantation } from "@/stores/plantation-store";
+import { first } from "lodash";
 
-export function KebunSwitcher({
-  kebuns: kebuns,
-}: {
-  kebuns: Array<KebunType>;
-}) {
+export function KebunSwitcher() {
   const { isMobile } = useSidebar();
-  const [activeTeam, setActiveTeam] = React.useState(kebuns[0]);
 
-  if (!activeTeam) {
-    return null;
-  }
+  const { plantations, plantation, updatePlantation } = usePlantation();
+
+  const selectedPlantation = React.useMemo(() => {
+    if (plantation) return plantation;
+    return first(plantations);
+  }, [plantation, plantations]);
 
   return (
     <SidebarMenu>
@@ -41,12 +38,23 @@ export function KebunSwitcher({
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
               <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
-                <activeTeam.logo className="size-4" />
+                {selectedPlantation ? (
+                  <TreePalm className="size-4" />
+                ) : (
+                  <FileQuestion className="size-4" />
+                )}
               </div>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">{activeTeam.name}</span>
+                <span className="truncate font-medium">
+                  {selectedPlantation
+                    ? selectedPlantation.name
+                    : "No kebun selected"}
+                </span>
                 <span className="truncate text-xs">
-                  {activeTeam.description}
+                  {/* {activeTeam.description} */}
+                  {selectedPlantation
+                    ? `${selectedPlantation.code} - ${selectedPlantation.areaTotalHa}`
+                    : "Pilih kebun untuk mulai"}
                 </span>
               </div>
               <ChevronsUpDown className="ml-auto" />
@@ -59,9 +67,9 @@ export function KebunSwitcher({
             sideOffset={4}
           >
             <DropdownMenuLabel className="text-muted-foreground text-xs">
-              Teams
+              List Kebun
             </DropdownMenuLabel>
-            {kebuns.map((team, index) => (
+            {/* {kebuns.map((team, index) => (
               <DropdownMenuItem
                 key={team.name}
                 onClick={() => setActiveTeam(team)}
@@ -73,7 +81,7 @@ export function KebunSwitcher({
                 {team.name}
                 <DropdownMenuShortcut>⌘{index + 1}</DropdownMenuShortcut>
               </DropdownMenuItem>
-            ))}
+            ))} */}
           </DropdownMenuContent>
         </DropdownMenu>
       </SidebarMenuItem>

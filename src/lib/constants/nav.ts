@@ -1,4 +1,4 @@
-import { Hand, SquareTerminal } from "lucide-react";
+import { Blocks, SquareTerminal, TreePalm } from "lucide-react";
 
 export type NavType = {
   title: string;
@@ -18,8 +18,13 @@ export const NAV_ITEMS: Array<NavType> = [
     icon: SquareTerminal,
   },
   {
-    title: "Pewaratan",
-    url: "/perawatan",
-    icon: Hand,
+    title: "Plantations",
+    url: "/plantations",
+    icon: TreePalm,
+  },
+  {
+    title: "Blocks",
+    url: "/blocks",
+    icon: Blocks,
   },
 ];
