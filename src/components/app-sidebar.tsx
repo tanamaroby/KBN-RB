@@ -2,6 +2,7 @@
 
 import * as React from "react";
 
+import { setUserSelectedPlantation } from "@/app/plantations/actions";
 import { NavMain } from "@/components/nav-main";
 import { NavUser } from "@/components/nav-user";
 import { KebunSwitcher } from "@/components/team-switcher";
@@ -15,6 +16,7 @@ import {
 import { NAV_ITEMS } from "@/lib/constants/nav";
 import { usePlantation } from "@/stores/plantation-store";
 import { useUser } from "@/stores/user-store";
+import { find, first, isNull } from "lodash";
 import { Plantation, users } from "../../generated/prisma";
 
 interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
@@ -24,17 +26,58 @@ interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
 
 export function AppSidebar({ ...props }: AppSidebarProps) {
   const { user, plantations } = props;
-  const { updateUser, setLoading } = useUser();
-  const { setPlantations, setLoading: setPlantationLoading } = usePlantation();
+  const { updateUser, setLoading: setUserLoading } = useUser();
+  const {
+    setPlantation,
+    setPlantations,
+    setLoading: setPlantationLoading,
+  } = usePlantation();
 
   React.useEffect(() => {
-    updateUser(user);
-    setLoading(false);
+    /* ---------------------------- DEFINED FUNCTIONS --------------------------- */
+    const updateUserSelectedPlantationId = async (
+      id: string | null,
+      email: string
+    ) => {
+      if (isNull(id)) return;
+      try {
+        await setUserSelectedPlantation(id, email);
+      } catch (e) {
+        console.error(e);
+      }
+    };
+
+    /* ------------------------------- UPDATE USER ------------------------------ */
+    // Update user selected plantation if none
+    let newUser = user;
+
+    if (!user.selectedPlantationId) {
+      newUser = {
+        ...newUser,
+        selectedPlantationId: first(plantations)?.id ?? null,
+      };
+      updateUserSelectedPlantationId(
+        newUser.selectedPlantationId,
+        newUser.email
+      );
+    }
+
+    // Update local storage of users
+    updateUser(newUser);
+
     if (plantations) {
       setPlantations(plantations);
+      setPlantation(
+        find(
+          plantations,
+          (plantation) => plantation.id === newUser.selectedPlantationId
+        ) ?? null
+      );
     }
+
+    setUserLoading(false);
     setPlantationLoading(false);
-  }, [user]);
+  }, [user, plantations]);
 
   return (
     <Sidebar collapsible="icon" {...props}>

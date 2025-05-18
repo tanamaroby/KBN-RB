@@ -9,6 +9,7 @@ export type UseUserStoreType = users & {
   updateEmail: (email: string) => void;
   updateRole: (role: string) => void;
   updateAvatar: (avatar: string) => void;
+  updateSelectedPlantationId: (id: string) => void;
   updateUser: (user: users) => void;
 };
 
@@ -19,6 +20,7 @@ export const EMPTY_USER: users = {
   password: "",
   role: "",
   avatar: null,
+  selectedPlantationId: null,
 };
 
 export const useUser = create<UseUserStoreType>((set) => ({
@@ -29,6 +31,8 @@ export const useUser = create<UseUserStoreType>((set) => ({
   updateLastName: (name: string) => set(() => ({ last_name: name })),
   updateEmail: (email: string) => set(() => ({ email })),
   updateRole: (role: string) => set(() => ({ role })),
+  updateSelectedPlantationId: (id: string) =>
+    set(() => ({ selectedPlantationId: id })),
   updateAvatar: (avatar: string) => set(() => ({ avatar })),
   updateUser: (user: users) => set(() => user),
 }));

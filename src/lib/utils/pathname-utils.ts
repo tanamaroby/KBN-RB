@@ -15,9 +15,9 @@ export const getBreadcrumbsFromPathname = (
   };
   return concat(
     firstElement,
-    map(pathnames, (pathname) => ({
+    map(pathnames, (pathname, i) => ({
       title: upperFirst(pathname),
-      href: pathname,
+      href: "/" + concat(pathnames.slice(0, i + 1)).join("/"),
     }))
   );
 };

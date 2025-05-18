@@ -7,6 +7,7 @@ import {
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbList,
+  BreadcrumbPage,
   BreadcrumbSeparator,
 } from "./ui/breadcrumb";
 import { SidebarTrigger } from "./ui/sidebar";
@@ -21,14 +22,18 @@ const AppSidebarHeader: React.FC<AppSidebarHeaderProps> = (props) => {
         <SidebarTrigger className="-ml-1" />
         <Breadcrumb>
           <BreadcrumbList>
-            {breadcrumbs.map((breadcrumb) => {
+            {breadcrumbs.map((breadcrumb, i) => {
               return (
                 <React.Fragment key={`breadcrumb-item-${breadcrumb.href}`}>
                   <BreadcrumbSeparator className="hidden md:block" />
                   <BreadcrumbItem className="hidden md:block">
-                    <BreadcrumbLink href={breadcrumb.href}>
-                      {breadcrumb.title}
-                    </BreadcrumbLink>
+                    {i === breadcrumbs.length - 1 ? (
+                      <BreadcrumbPage>{breadcrumb.title}</BreadcrumbPage>
+                    ) : (
+                      <BreadcrumbLink href={breadcrumb.href}>
+                        {breadcrumb.title}
+                      </BreadcrumbLink>
+                    )}
                   </BreadcrumbItem>
                 </React.Fragment>
               );

@@ -18,7 +18,7 @@ export const NAV_ITEMS: Array<NavType> = [
     icon: SquareTerminal,
   },
   {
-    title: "Plantations",
+    title: "Kebun",
     url: "/plantations",
     icon: TreePalm,
   },

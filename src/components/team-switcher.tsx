@@ -1,12 +1,20 @@
 "use client";
 
-import { ChevronsUpDown, FileQuestion, TreePalm } from "lucide-react";
-import * as React from "react";
+import {
+  ChevronsUpDown,
+  FileQuestion,
+  Palmtree,
+  Plus,
+  TreePalm,
+} from "lucide-react";
 
+import { setUserSelectedPlantation } from "@/app/plantations/actions";
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuItem,
   DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
@@ -15,20 +23,33 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
+import { cn } from "@/lib/utils";
 import { usePlantation } from "@/stores/plantation-store";
-import { first } from "lodash";
+import { useUser } from "@/stores/user-store";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { Plantation } from "../../generated/prisma";
 import { Skeleton } from "./ui/skeleton";
 
 export function KebunSwitcher() {
   const { isMobile } = useSidebar();
+  const router = useRouter();
 
-  const { plantations, plantation, updatePlantation, loading } =
-    usePlantation();
+  const { email, selectedPlantationId, updateSelectedPlantationId } = useUser();
+  const { plantations, plantation, setPlantation, loading } = usePlantation();
 
-  const selectedPlantation = React.useMemo(() => {
-    if (plantation) return plantation;
-    return first(plantations);
-  }, [plantation, plantations]);
+  const onSelectedPlantation = async (plantation: Plantation) => {
+    try {
+      if (selectedPlantationId !== plantation.id) {
+        await setUserSelectedPlantation(plantation.id, email);
+        updateSelectedPlantationId(plantation.id);
+        setPlantation(plantation);
+        router.refresh();
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
 
   if (loading) {
     return (
@@ -52,7 +73,7 @@ export function KebunSwitcher() {
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
               <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
-                {selectedPlantation ? (
+                {plantation ? (
                   <TreePalm className="size-4" />
                 ) : (
                   <FileQuestion className="size-4" />
@@ -60,15 +81,13 @@ export function KebunSwitcher() {
               </div>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-medium">
-                  {selectedPlantation
-                    ? selectedPlantation.name
-                    : "No kebun selected"}
+                  {plantation ? plantation.name : "Tidak ada kebun dipilih"}
                 </span>
                 <span className="truncate text-xs">
                   {/* {activeTeam.description} */}
-                  {selectedPlantation
-                    ? `${selectedPlantation.code} - ${selectedPlantation.areaTotalHa}`
-                    : "Pilih kebun untuk mulai"}
+                  {plantation
+                    ? `${plantation.code} - ${plantation.areaTotalHa} Ha`
+                    : "Pilih / buat kebun untuk mulai"}
                 </span>
               </div>
               <ChevronsUpDown className="ml-auto" />
@@ -83,19 +102,34 @@ export function KebunSwitcher() {
             <DropdownMenuLabel className="text-muted-foreground text-xs">
               List Kebun
             </DropdownMenuLabel>
-            {/* {kebuns.map((team, index) => (
-              <DropdownMenuItem
-                key={team.name}
-                onClick={() => setActiveTeam(team)}
-                className="gap-2 p-2"
-              >
-                <div className="flex size-6 items-center justify-center rounded-md border">
-                  <team.logo className="size-3.5 shrink-0" />
+            {plantations.map((plantation, i) => {
+              return (
+                <DropdownMenuItem
+                  key={plantation.id}
+                  onClick={() => onSelectedPlantation(plantation)}
+                  className={cn(
+                    "gap-2 p-2",
+                    selectedPlantationId === plantation.id && "bg-accent"
+                  )}
+                >
+                  <div className="flex size-6 items-center justify-center rounded-md border">
+                    <Palmtree className="size-3.5 shrink-0" />
+                  </div>
+                  <p>{plantation.name}</p>
+                </DropdownMenuItem>
+              );
+            })}
+            <DropdownMenuSeparator />
+            <Link href="/plantations/new">
+              <DropdownMenuItem className="gap-2 p-2">
+                <div className="flex size-6 items-center justify-center rounded-md border bg-background">
+                  <Plus className="size-4" />
                 </div>
-                {team.name}
-                <DropdownMenuShortcut>⌘{index + 1}</DropdownMenuShortcut>
+                <p className="font-medium text-muted-foreground">
+                  Tambah kebun
+                </p>
               </DropdownMenuItem>
-            ))} */}
+            </Link>
           </DropdownMenuContent>
         </DropdownMenu>
       </SidebarMenuItem>
