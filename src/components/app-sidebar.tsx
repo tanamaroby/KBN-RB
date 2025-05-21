@@ -17,6 +17,7 @@ import { NAV_ITEMS } from "@/lib/constants/nav";
 import { usePlantation } from "@/stores/plantation-store";
 import { useUser } from "@/stores/user-store";
 import { find, first, isNull } from "lodash";
+import toast from "react-hot-toast";
 import { Plantation, users } from "../../generated/prisma";
 
 interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
@@ -41,7 +42,11 @@ export function AppSidebar({ ...props }: AppSidebarProps) {
     ) => {
       if (isNull(id)) return;
       try {
-        await setUserSelectedPlantation(id, email);
+        await toast.promise(setUserSelectedPlantation(id, email), {
+          loading: "Mengambil kebun pilihan user",
+          success: "Informasi kebun berhasil di ambil!",
+          error: "Informasi kebun gagal di ambil!.",
+        });
       } catch (e) {
         console.error(e);
       }

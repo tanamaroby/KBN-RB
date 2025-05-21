@@ -23,6 +23,7 @@ import { useUser } from "@/stores/user-store";
 import { isEmpty } from "lodash";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 import { Plantation } from "../../generated/prisma";
 import { Skeleton } from "./ui/skeleton";
 
@@ -36,7 +37,11 @@ export function KebunSwitcher() {
   const onSelectedPlantation = async (plantation: Plantation) => {
     try {
       if (selectedPlantationId !== plantation.id) {
-        await setUserSelectedPlantation(plantation.id, email);
+        await toast.promise(setUserSelectedPlantation(plantation.id, email), {
+          loading: "Sedang di process...",
+          success: "Berhasil merubah kebun pilihan user!",
+          error: "Gagal merubah kebun pilihan user!",
+        });
         updateSelectedPlantationId(plantation.id);
         setPlantation(plantation);
         router.refresh();

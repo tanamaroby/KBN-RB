@@ -15,6 +15,7 @@ import {
   CardTitle,
 } from "../ui/card";
 import { Label } from "../ui/label";
+import PlantationDeleteButton from "./PlantationDeleteButton";
 
 interface PlantationCardProps extends Plantation {}
 
@@ -101,16 +102,14 @@ const PlantationCard: React.FC<PlantationCardProps> = (props) => {
           />
         </div>
       </CardContent>
-      <CardFooter className="flex justify-center items-end border-t">
-        <Link href={`/plantations/${props.id}`}>
-          <Button
-            variant="ghost"
-            className="flex w-full items-center gap-2 h-fit text-primary hover:bg-transparent hover:text-primary hover:scale-105 transition-transform cursor-pointer"
-          >
+      <CardFooter className="flex items-center justify-between border-t gap-4">
+        <Link href={`/plantations/${props.id}`} className="col-span-3 w-full">
+          <Button className="flex w-full items-center gap-2">
             <Search />
             <p>Lihat dan Edit</p>
           </Button>
         </Link>
+        <PlantationDeleteButton id={props.id} />
       </CardFooter>
     </Card>
   );
