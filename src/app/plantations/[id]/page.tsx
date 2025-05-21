@@ -6,7 +6,7 @@ import { getPlantationFromId } from "./actions";
 export default async function ViewEditPlantation({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
   const plantation = await getPlantationFromId(id);
