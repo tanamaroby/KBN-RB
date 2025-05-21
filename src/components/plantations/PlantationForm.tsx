@@ -3,6 +3,7 @@
 import { createOrUpdatePlantation } from "@/app/plantations/new/actions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import dayjs from "dayjs";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import * as React from "react";
 import { useForm } from "react-hook-form";
@@ -319,6 +320,11 @@ const PlantationForm: React.FC<PlantationFormProps> = (props) => {
           Selesai
         </Button>
       </form>
+      <Link href="/plantations">
+        <Button className="w-full" variant="outline">
+          Cancel
+        </Button>
+      </Link>
     </Form>
   );
 };
