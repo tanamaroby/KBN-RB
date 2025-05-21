@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
+import { Toaster } from "react-hot-toast";
 import "./globals.css";
 
 const font = Roboto({ subsets: ["latin"] });
@@ -16,7 +17,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${font.className} antialiased`}>{children}</body>
+      <body className={`${font.className} antialiased`}>
+        {children}
+        <Toaster position="bottom-right" />
+      </body>
     </html>
   );
 }

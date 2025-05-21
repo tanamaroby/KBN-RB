@@ -1,11 +1,12 @@
 "use client";
 
-import { createNewPlantation } from "@/app/plantations/new/actions";
+import { createOrUpdatePlantation } from "@/app/plantations/new/actions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
 import * as React from "react";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import { z } from "zod";
 import { Plantation } from "../../../generated/prisma";
 import { Button } from "../ui/button";
@@ -23,10 +24,11 @@ import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 
 interface PlantationFormProps {
-  plantation?: Plantation;
+  plantation?: Plantation | null;
 }
 
 const formSchema = z.object({
+  id: z.string().optional(),
   name: z.string().min(3),
   code: z.string().min(1),
   location: z.string().min(3),
@@ -46,33 +48,49 @@ const PlantationForm: React.FC<PlantationFormProps> = (props) => {
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      name: "",
-      code: "",
-      location: "",
-      areaTotalHa: "0",
-      ownerCompany: "",
-      managerName: "",
-      contactNumber: "",
-      latitude: "0",
-      longitude: "0",
-      notes: "",
-      createdAt: dayjs().toDate(),
-    },
+    defaultValues: injectedPlantations
+      ? {
+          ...(injectedPlantations as any),
+          areaTotalHa: injectedPlantations.areaTotalHa?.toString(),
+          latitude: injectedPlantations.latitude?.toString(),
+          longitude: injectedPlantations.longitude?.toString(),
+        }
+      : {
+          id: "",
+          name: "",
+          code: "",
+          location: "",
+          areaTotalHa: "0",
+          ownerCompany: "",
+          managerName: "",
+          contactNumber: "",
+          latitude: "0",
+          longitude: "0",
+          notes: "",
+          createdAt: dayjs().toDate(),
+        },
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await createNewPlantation({
-        ...values,
-        areaTotalHa: parseFloat(values.areaTotalHa),
-        ownerCompany: values.ownerCompany ?? null,
-        managerName: values.managerName ?? null,
-        contactNumber: values.contactNumber ?? null,
-        latitude: values.latitude ? parseFloat(values.latitude) : null,
-        longitude: values.longitude ? parseFloat(values.longitude) : null,
-        notes: values.notes ?? null,
-      });
+      await toast.promise(
+        createOrUpdatePlantation({
+          id: undefined,
+          ...values,
+          areaTotalHa: parseFloat(values.areaTotalHa),
+          ownerCompany: values.ownerCompany ?? null,
+          managerName: values.managerName ?? null,
+          contactNumber: values.contactNumber ?? null,
+          latitude: values.latitude ? parseFloat(values.latitude) : null,
+          longitude: values.longitude ? parseFloat(values.longitude) : null,
+          notes: values.notes ?? null,
+        }),
+        {
+          loading: "Saving...",
+          success: "Kebun berhasil di buat / edit!",
+          error: "Kebun tidak berhasil di buat / edit!",
+        }
+      );
       router.refresh();
       router.push("/plantations");
     } catch (e) {

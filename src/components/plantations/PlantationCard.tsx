@@ -2,6 +2,7 @@ import { cn } from "@/lib/utils";
 import { capitalize } from "lodash";
 import { Search } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import * as React from "react";
 import { Plantation } from "../../../generated/prisma";
 import { Button } from "../ui/button";
@@ -101,13 +102,15 @@ const PlantationCard: React.FC<PlantationCardProps> = (props) => {
         </div>
       </CardContent>
       <CardFooter className="flex justify-center items-end border-t">
-        <Button
-          variant="ghost"
-          className="flex w-full items-center gap-2 h-fit text-primary hover:bg-transparent hover:text-primary hover:scale-105 transition-transform cursor-pointer"
-        >
-          <Search />
-          <p>Lihat dan Edit</p>
-        </Button>
+        <Link href={`/plantations/${props.id}`}>
+          <Button
+            variant="ghost"
+            className="flex w-full items-center gap-2 h-fit text-primary hover:bg-transparent hover:text-primary hover:scale-105 transition-transform cursor-pointer"
+          >
+            <Search />
+            <p>Lihat dan Edit</p>
+          </Button>
+        </Link>
       </CardFooter>
     </Card>
   );

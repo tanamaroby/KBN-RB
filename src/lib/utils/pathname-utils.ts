@@ -5,6 +5,10 @@ export type BreadcrumbType = {
   href: string;
 };
 
+export const isDynamicRoute = (pathname: string) => {
+  return /\[[^/]+?]/.test(pathname);
+};
+
 export const getBreadcrumbsFromPathname = (
   pathname: string
 ): Array<BreadcrumbType> => {
