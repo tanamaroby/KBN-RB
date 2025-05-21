@@ -56,10 +56,12 @@ export function AppSidebar({ ...props }: AppSidebarProps) {
         ...newUser,
         selectedPlantationId: first(plantations)?.id ?? null,
       };
-      updateUserSelectedPlantationId(
-        newUser.selectedPlantationId,
-        newUser.email
-      );
+      if (newUser.selectedPlantationId) {
+        updateUserSelectedPlantationId(
+          newUser.selectedPlantationId,
+          newUser.email
+        );
+      }
     }
 
     // Update local storage of users

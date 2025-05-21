@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  ChevronsUpDown,
-  FileQuestion,
-  Palmtree,
-  Plus,
-  TreePalm,
-} from "lucide-react";
+import { ChevronsUpDown, Palmtree, Plus, TreePalm } from "lucide-react";
 
 import { setUserSelectedPlantation } from "@/app/plantations/actions";
 import {
@@ -26,6 +20,7 @@ import {
 import { cn } from "@/lib/utils";
 import { usePlantation } from "@/stores/plantation-store";
 import { useUser } from "@/stores/user-store";
+import { isEmpty } from "lodash";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Plantation } from "../../generated/prisma";
@@ -63,6 +58,31 @@ export function KebunSwitcher() {
     );
   }
 
+  if (isEmpty(plantations) || !plantation) {
+    return (
+      <SidebarMenu>
+        <SidebarMenuItem className="text-muted-foreground">
+          <Link href={"/plantations/new"}>
+            <SidebarMenuButton
+              size="lg"
+              className="flex items-center gap-2 cursor-pointer"
+            >
+              <div className="flex aspect-square size-8 items-center justify-center rounded-lg border border-muted-foreground border-dashed">
+                <Plus className="size-4" />
+              </div>
+              <div className="grid flex-1 text-left text-sm leading-tight">
+                <span className="truncate font-medium">Belum ada kebun</span>
+                <span className="truncate text-xs">
+                  Click untuk tambah kebun
+                </span>
+              </div>
+            </SidebarMenuButton>
+          </Link>
+        </SidebarMenuItem>
+      </SidebarMenu>
+    );
+  }
+
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -73,21 +93,12 @@ export function KebunSwitcher() {
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
               <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
-                {plantation ? (
-                  <TreePalm className="size-4" />
-                ) : (
-                  <FileQuestion className="size-4" />
-                )}
+                <TreePalm className="size-4" />
               </div>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">
-                  {plantation ? plantation.name : "Tidak ada kebun dipilih"}
-                </span>
+                <span className="truncate font-medium">{plantation.name}</span>
                 <span className="truncate text-xs">
-                  {/* {activeTeam.description} */}
-                  {plantation
-                    ? `${plantation.code} - ${plantation.areaTotalHa} Ha`
-                    : "Pilih / buat kebun untuk mulai"}
+                  {plantation.code} - {plantation.areaTotalHa} Ha
                 </span>
               </div>
               <ChevronsUpDown className="ml-auto" />
