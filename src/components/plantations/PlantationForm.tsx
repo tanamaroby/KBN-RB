@@ -4,6 +4,7 @@ import {
   createPlantation,
   updatePlantationById,
 } from "@/app/plantations/new/actions";
+import { useUser } from "@/stores/user-store";
 import { zodResolver } from "@hookform/resolvers/zod";
 import dayjs from "dayjs";
 import Link from "next/link";
@@ -48,6 +49,7 @@ const formSchema = z.object({
 const PlantationForm: React.FC<PlantationFormProps> = (props) => {
   const { plantation: injectedPlantations } = props;
   const router = useRouter();
+  const { email } = useUser();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -92,8 +94,8 @@ const PlantationForm: React.FC<PlantationFormProps> = (props) => {
     try {
       await toast.promise(
         injectedPlantations
-          ? updatePlantationById(parsedValues, injectedPlantations.id)
-          : createPlantation(parsedValues),
+          ? updatePlantationById(parsedValues, injectedPlantations.id, email)
+          : createPlantation(parsedValues, email),
         {
           loading: "Saving...",
           success: "Kebun berhasil di buat / edit!",
@@ -324,6 +326,7 @@ const PlantationForm: React.FC<PlantationFormProps> = (props) => {
         <Button
           className="col-span-1 lg:col-span-2 xl:col-span-3"
           type="submit"
+          disabled={!form.formState.isDirty}
         >
           Selesai
         </Button>

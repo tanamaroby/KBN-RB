@@ -40,7 +40,7 @@ model Plantation {
 
 model PlantationHistory {
   id            String  @id @default(uuid())
-  plantationId  String
+  plantationId  String?
   name          String
   code          String
   action        String
@@ -56,7 +56,7 @@ model PlantationHistory {
   recordedAt DateTime @default(now()) // When the snapshot was taken
   recordedBy String? // Optional: user who made the change
 
-  plantation Plantation @relation(fields: [plantationId], references: [id])
+  plantation Plantation? @relation(fields: [plantationId], references: [id])
 
   @@index([plantationId])
 }

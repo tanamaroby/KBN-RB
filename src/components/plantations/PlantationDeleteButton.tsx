@@ -1,6 +1,7 @@
 "use client";
 
 import { deletePlantationFromId } from "@/app/plantations/[id]/actions";
+import { useUser } from "@/stores/user-store";
 import { Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
 import * as React from "react";
@@ -25,11 +26,12 @@ const PlantationDeleteButton: React.FC<PlantationDeleteButtonProps> = (
 ) => {
   const { id } = props;
   const router = useRouter();
+  const { email } = useUser();
   const [open, setOpen] = React.useState(false);
 
   const onDelete = async () => {
     try {
-      await toast.promise(deletePlantationFromId(id), {
+      await toast.promise(deletePlantationFromId(id, email), {
         loading: "Kebun sedang dihapus...",
         success: "Kebun berhasil dihapus!",
         error: "Kebun gagal dihapus!",
@@ -38,6 +40,7 @@ const PlantationDeleteButton: React.FC<PlantationDeleteButtonProps> = (
       router.refresh();
     } catch (e) {
       console.error(e);
+      toast.error((e as Error).message);
     }
   };
 

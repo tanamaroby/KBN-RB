@@ -13,7 +13,7 @@ const CurrentTeamIndicator: React.FC<CurrentTeamIndicatorProps> = (props) => {
 
   if (loading) return <Skeleton className="h-6 w-2xl" />;
   if (!plantation)
-    return <p className="text-lg">Currently no team is selected!</p>;
+    return <p className="text-sm">Tidak ada kebun yang terpilih!</p>;
 
   return (
     <div className="flex items-center space-x-1 text-sm text-muted-foreground">
