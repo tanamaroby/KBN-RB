@@ -11,6 +11,15 @@ import AgGridTable from "../table/ag-grid-table";
 /* --------------------------------- AG GRID -------------------------------- */
 const agGridColDef: ColDef[] = [
   {
+    headerName: "Tanggal",
+    field: "recordedAt",
+    filter: "agDateColumnFilter",
+    sortable: true,
+    width: 130,
+    pinned: "left",
+    resizable: false,
+  },
+  {
     headerName: "Name",
     field: "name",
     filter: "agTextColumnFilder",
@@ -80,13 +89,6 @@ const agGridColDef: ColDef[] = [
     field: "notes",
     filter: "agTextColumnFilter",
     minWidth: 350,
-  },
-  {
-    headerName: "Tanggal Record",
-    field: "recordedAt",
-    filter: "agDateColumnFilter",
-    sortable: true,
-    minWidth: 180,
   },
   {
     headerName: "Nama Pembuat Record",
