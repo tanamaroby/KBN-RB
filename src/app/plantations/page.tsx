@@ -1,3 +1,4 @@
+import CurrentTeamIndicator from "@/components/current-team-indicator";
 import PlantationComponent from "@/components/plantations/PlantationComponent";
 import PlantationHistoryComponent from "@/components/plantations/PlantationHistoryComponent";
 import SidebarWrapper from "@/components/sidebar-wrapper";
@@ -10,7 +11,8 @@ import Link from "next/link";
 export default async function Plantations() {
   return (
     <SidebarWrapper>
-      <Title>Sejarah Kebun Yang Dipilih</Title>
+      <Title>Sejarah Kebun</Title>
+      <CurrentTeamIndicator />
       <PlantationHistoryComponent />
       <Separator dir="horizontal" />
       <div className="flex justify-between items-center">
