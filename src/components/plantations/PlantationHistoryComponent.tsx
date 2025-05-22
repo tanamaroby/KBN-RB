@@ -107,31 +107,36 @@ const PlantationHistoryComponent: React.FC<
   const [plantationHistories, setPlantationHistories] = React.useState<
     PlantationHistory[] | null
   >(null);
+  console.log("roby -> plantationHistories:", plantationHistories);
   const [loading, setLoading] = React.useState(true);
 
   const { selectedPlantationId } = useUser();
 
   React.useEffect(() => {
-    if (!selectedPlantationId) return;
+    if (!selectedPlantationId) {
+      setLoading(false);
+      return;
+    }
 
     const fetchSelectedPlantationHistory = async () => {
       const histories = await getPlantationHistoryFromIdSortedByDate(
         selectedPlantationId
       );
       setPlantationHistories(histories);
-      setLoading(false);
     };
 
     try {
       fetchSelectedPlantationHistory();
     } catch (error) {
       toast.error("Terjadi kesalahan saat memuat sejarah kebun.");
+    } finally {
+      setLoading(false);
     }
   }, [selectedPlantationId]);
 
   return (
     <AgGridTable
-      rowData={plantationHistories ?? []}
+      rowData={plantationHistories || []}
       columnDefs={agGridColDef}
       loading={loading}
       height={600}
