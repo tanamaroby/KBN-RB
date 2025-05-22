@@ -34,7 +34,31 @@ model Plantation {
   createdAt     DateTime @default(now())
   updatedAt     DateTime @default(now()) @updatedAt
 
-  blocks Block[] // One-to-many relationship
+  blocks            Block[] // One-to-many relationship
+  PlantationHistory PlantationHistory[]
+}
+
+model PlantationHistory {
+  id            String  @id @default(uuid())
+  plantationId  String
+  name          String
+  code          String
+  action        String
+  location      String?
+  areaTotalHa   Float?
+  ownerCompany  String?
+  managerName   String?
+  contactNumber String?
+  latitude      Float?
+  longitude     Float?
+  notes         String?
+
+  recordedAt DateTime @default(now()) // When the snapshot was taken
+  recordedBy String? // Optional: user who made the change
+
+  plantation Plantation @relation(fields: [plantationId], references: [id])
+
+  @@index([plantationId])
 }
 
 model Block {

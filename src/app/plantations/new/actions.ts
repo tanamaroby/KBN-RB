@@ -4,21 +4,25 @@ import { prisma } from "@/lib/prisma";
 import dayjs from "dayjs";
 import { Plantation } from "../../../../generated/prisma";
 
-export const createOrUpdatePlantation = async (
-  plantation: Omit<Plantation, "id" | "updatedAt"> & {
-    id: string | undefined;
-  }
+export const createPlantation = async (
+  plantation: Omit<Plantation, "id" | "updatedAt">
 ) => {
-  return await prisma.plantation.upsert({
+  return await prisma.plantation.create({
+    data: plantation,
+  });
+};
+
+export const updatePlantationById = async (
+  plantation: Omit<Plantation, "id" | "updatedAt">,
+  id: string
+) => {
+  return await prisma.plantation.update({
     where: {
-      id: plantation.id,
+      id,
     },
-    update: {
+    data: {
       ...plantation,
       updatedAt: dayjs().toDate(),
-    },
-    create: {
-      ...plantation,
     },
   });
 };
