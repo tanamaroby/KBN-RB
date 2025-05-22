@@ -1,6 +1,10 @@
 "use client";
 
-import { createOrUpdatePlantation } from "@/app/plantations/new/actions";
+import {
+  createPlantation,
+  updatePlantationById,
+} from "@/app/plantations/new/actions";
+import { useUser } from "@/stores/user-store";
 import { zodResolver } from "@hookform/resolvers/zod";
 import dayjs from "dayjs";
 import Link from "next/link";
@@ -29,7 +33,6 @@ interface PlantationFormProps {
 }
 
 const formSchema = z.object({
-  id: z.string().optional(),
   name: z.string().min(3),
   code: z.string().min(1),
   location: z.string().min(3),
@@ -46,18 +49,23 @@ const formSchema = z.object({
 const PlantationForm: React.FC<PlantationFormProps> = (props) => {
   const { plantation: injectedPlantations } = props;
   const router = useRouter();
+  const { email } = useUser();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: injectedPlantations
       ? {
-          ...(injectedPlantations as any),
+          ...injectedPlantations,
+          location: injectedPlantations.location ?? "",
+          ownerCompany: injectedPlantations.ownerCompany ?? "",
+          managerName: injectedPlantations.managerName ?? "",
+          contactNumber: injectedPlantations.contactNumber ?? "",
+          notes: injectedPlantations.notes ?? "",
           areaTotalHa: injectedPlantations.areaTotalHa?.toString(),
           latitude: injectedPlantations.latitude?.toString(),
           longitude: injectedPlantations.longitude?.toString(),
         }
       : {
-          id: "",
           name: "",
           code: "",
           location: "",
@@ -73,19 +81,21 @@ const PlantationForm: React.FC<PlantationFormProps> = (props) => {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    const parsedValues: Omit<Plantation, "id" | "updatedAt"> = {
+      ...values,
+      areaTotalHa: parseFloat(values.areaTotalHa),
+      ownerCompany: values.ownerCompany ?? null,
+      managerName: values.managerName ?? null,
+      contactNumber: values.contactNumber ?? null,
+      latitude: values.latitude ? parseFloat(values.latitude) : null,
+      longitude: values.longitude ? parseFloat(values.longitude) : null,
+      notes: values.notes ?? null,
+    };
     try {
       await toast.promise(
-        createOrUpdatePlantation({
-          id: undefined,
-          ...values,
-          areaTotalHa: parseFloat(values.areaTotalHa),
-          ownerCompany: values.ownerCompany ?? null,
-          managerName: values.managerName ?? null,
-          contactNumber: values.contactNumber ?? null,
-          latitude: values.latitude ? parseFloat(values.latitude) : null,
-          longitude: values.longitude ? parseFloat(values.longitude) : null,
-          notes: values.notes ?? null,
-        }),
+        injectedPlantations
+          ? updatePlantationById(parsedValues, injectedPlantations.id, email)
+          : createPlantation(parsedValues, email),
         {
           loading: "Saving...",
           success: "Kebun berhasil di buat / edit!",
@@ -316,6 +326,7 @@ const PlantationForm: React.FC<PlantationFormProps> = (props) => {
         <Button
           className="col-span-1 lg:col-span-2 xl:col-span-3"
           type="submit"
+          disabled={!form.formState.isDirty}
         >
           Selesai
         </Button>

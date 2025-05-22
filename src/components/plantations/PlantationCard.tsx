@@ -85,7 +85,7 @@ const PlantationCard: React.FC<PlantationCardProps> = (props) => {
           <PlantationItem
             label="Keterangan"
             value={props.notes}
-            className="sm:col-span-2 line-clamp-2"
+            className="sm:col-span-2"
           />
         </div>
 
