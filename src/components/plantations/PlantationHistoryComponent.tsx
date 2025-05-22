@@ -107,7 +107,6 @@ const PlantationHistoryComponent: React.FC<
   const [plantationHistories, setPlantationHistories] = React.useState<
     PlantationHistory[] | null
   >(null);
-  console.log("roby -> plantationHistories:", plantationHistories);
   const [loading, setLoading] = React.useState(true);
 
   const { selectedPlantationId } = useUser();
