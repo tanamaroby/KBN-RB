@@ -15,9 +15,6 @@ const PlantationComponent: React.FC<PlantationComponentProps> = (props) => {
         <Skeleton className="h-[500px] w-full" />
         <Skeleton className="h-[500px] w-full" />
         <Skeleton className="h-[500px] w-full" />
-        <Skeleton className="h-[500px] w-full" />
-        <Skeleton className="h-[500px] w-full" />
-        <Skeleton className="h-[500px] w-full" />
       </div>
     );
   }
