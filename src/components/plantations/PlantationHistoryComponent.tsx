@@ -137,7 +137,6 @@ const PlantationHistoryComponent: React.FC<
       height={600}
       pagination
       paginationPageSize={20}
-      paginationPageSizeSelector={[20, 40, 80, 100]}
     />
   );
 };

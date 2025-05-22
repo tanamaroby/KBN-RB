@@ -17,7 +17,6 @@ interface AgGridTableProps {
   columnDefs: ColDef[];
   pagination?: boolean;
   paginationPageSize?: number;
-  paginationPageSizeSelector?: number[] | boolean;
   loading?: boolean;
 }
 
@@ -28,7 +27,6 @@ const AgGridTable: React.FC<AgGridTableProps> = (props) => {
     columnDefs = [],
     pagination,
     paginationPageSize,
-    paginationPageSizeSelector,
     loading,
   } = props;
 
@@ -52,9 +50,7 @@ const AgGridTable: React.FC<AgGridTableProps> = (props) => {
         defaultColDef={defaultColDef}
         pagination={pagination}
         paginationPageSize={pagination ? paginationPageSize : undefined}
-        paginationPageSizeSelector={
-          pagination ? paginationPageSizeSelector : undefined
-        }
+        paginationPageSizeSelector={false}
         loading={loading}
       />
     </div>

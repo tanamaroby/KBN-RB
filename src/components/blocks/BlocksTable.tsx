@@ -20,7 +20,6 @@ const BlocksTable: React.FC = () => {
       columnDefs={columnDefs}
       pagination={true}
       paginationPageSize={20}
-      paginationPageSizeSelector={[10, 20, 50, 100]}
     />
   );
 };
